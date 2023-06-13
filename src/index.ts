@@ -1,21 +1,17 @@
 import * as express from "express";
-import { conn } from "./dbConnection";
 import router from "./routes";
+import sequelize from "./database/dbConnection";
 
 const app = express();
-
-// app.use(express.json());
+app.use(express.json());
 app.use(router);
 
-//Initial server
-conn.connect((err: any) => {
-  if (err) {
-    return console.log(err);
-  }
+//Db
+(async () => {
+  //Models
+  const Users = require("./models/User");
+  const Tasks = require("./models/Tasks");
+  const Category = require("./models/Category");
 
-  console.log("Conectou ao MySQL!");
-
-  app.listen(3000, () => {
-    console.log("server rodando na porta 3000");
-  });
-});
+  await sequelize.sync();
+})();

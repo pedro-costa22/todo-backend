@@ -1,4 +1,4 @@
-import { conn } from "@/dbConnection";
+import { conn } from "@/database/dbConnection";
 
 class TodoRepository {}
 
