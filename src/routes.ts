@@ -5,7 +5,7 @@ import TodoController from "./app/controllers/TodoController";
 
 const router = Router();
 
-router.post("/login", AuthCotroller.login);
-router.post("/register", AuthCotroller.register);
+router.post("/login", AuthCotroller.show);
+router.post("/register", AuthCotroller.store);
 
 export default router;

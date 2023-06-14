@@ -14,4 +14,5 @@ app.use(router);
   const Category = require("./models/Category");
 
   await sequelize.sync();
+  app.listen(3000);
 })();
