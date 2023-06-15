@@ -29,13 +29,47 @@ class CategoryController {
     });
   }
 
-  // async update(req: Request, res: Response) {
+  async update(req: Request, res: Response) {
+    const { id, newName } = req.body;
 
-  // };
+    if (!id) return res.status(400).json({ error: "id não pode ser nulo" });
+    if (!newName)
+      return res.status(400).json({ error: "O nome não pode ser nulo" });
 
-  // async delete(req: Request, res: Response) {
+    const categoryExists = await CategoryRepository.findById(id);
 
-  // }
+    if (!categoryExists)
+      return res
+        .status(400)
+        .json({ error: "Categoria não existe no sistema." });
+
+    const newCategory = await CategoryRepository.update(id, newName);
+
+    if (newCategory)
+      return res.status(200).json({
+        message: "Categoria atualizada com sucesso",
+        newCategory
+      });
+  }
+
+  async delete(req: Request, res: Response) {
+    const { id } = req.body;
+
+    if (!id) return res.status(400).json({ error: "id não pode ser nulo" });
+
+    const categoryExists = await CategoryRepository.findById(id);
+
+    if (!categoryExists)
+      return res
+        .status(400)
+        .json({ error: "Categoria não existe no sistema." });
+
+    await CategoryRepository.delete(id);
+
+    return res.status(200).json({
+      message: "Categoria excluida com sucesso"
+    });
+  }
 }
 
 export default new CategoryController();

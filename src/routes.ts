@@ -11,5 +11,7 @@ router.post("/register", AuthCotroller.store);
 
 router.get("/categories", CategoryController.show);
 router.post("/category/create", CategoryController.store);
+router.delete("/category/delete", CategoryController.delete);
+router.put("/category/update", CategoryController.update);
 
 export default router;

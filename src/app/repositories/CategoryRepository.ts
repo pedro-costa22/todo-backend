@@ -1,5 +1,6 @@
 import { Response, Request } from "express";
 import Category from "../../models/Category";
+import { where } from "sequelize";
 
 class CategoryRepository {
   async findAll() {
@@ -27,6 +28,29 @@ class CategoryRepository {
     });
 
     return row;
+  }
+
+  async findById(id: string) {
+    const row = await Category.findOne({
+      raw: true,
+      where: {
+        id: id
+      }
+    });
+
+    return row;
+  }
+
+  async delete(id: string) {
+    await Category.destroy({
+      where: { id: id }
+    });
+  }
+
+  async update(id: string, newName: string) {
+    await Category.update({ name: newName }, { where: { id: id } });
+
+    return this.findById(id);
   }
 }
 
