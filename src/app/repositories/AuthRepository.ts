@@ -1,5 +1,6 @@
 import User from "../../models/User";
 import { INewUser } from "@/types/User";
+import { IUpdateUser } from "@/types/UpdateUser";
 
 class AuthRepository {
   async findByEmail(email: string) {
@@ -33,6 +34,34 @@ class AuthRepository {
     });
 
     return newUser;
+  }
+
+  async findById(id: string) {
+    const row = await User.findOne({
+      raw: true,
+      where: {
+        id: id
+      }
+    });
+
+    return row;
+  }
+
+  async findPassword(id: string, password: string) {
+    const row = await User.findOne({
+      raw: true,
+      where: {
+        id: id,
+        password: password
+      }
+    });
+
+    return row;
+  }
+
+  async updateUser(id: string, payload: IUpdateUser) {
+    await User.update({ ...payload }, { where: { id: id } });
+    return this.findById(id);
   }
 }
 

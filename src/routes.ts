@@ -8,6 +8,7 @@ const router = Router();
 
 router.post("/login", AuthCotroller.show);
 router.post("/register", AuthCotroller.store);
+router.post("/user/update", AuthCotroller.update);
 
 router.get("/categories", CategoryController.show);
 router.post("/category/create", CategoryController.store);

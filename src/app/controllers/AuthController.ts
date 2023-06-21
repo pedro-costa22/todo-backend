@@ -55,6 +55,70 @@ class AuthCotroller {
 
     return res.status(400).json({ error: "Dados inválidos" });
   }
+
+  async update(req: Request, res: Response) {
+    const { id, name, newEmail, currentPassword, newPassword, profile } =
+      req.body;
+
+    if (!id) return res.status(400).json({ error: "Id não pode ser nulo" });
+
+    const userExists = await AuthRepository.findById(id);
+
+    if (!userExists)
+      return res.status(400).json({
+        Error: "Usuário não encontrado"
+      });
+
+    const defaultPayload = {
+      name: name,
+      email: newEmail,
+      password: newPassword,
+      profile: profile
+    };
+
+    let dinamycPayload = {};
+    for (const [key, value] of Object.entries(defaultPayload)) {
+      if (value) {
+        dinamycPayload = {
+          ...dinamycPayload,
+          [key]: value
+        };
+      }
+    }
+
+    if (!newPassword) {
+      if (Object.keys(dinamycPayload).length === 0) {
+        return res.status(400).json({
+          message: "Nenhum dado informado"
+        });
+      }
+
+      const update = await AuthRepository.updateUser(id, dinamycPayload);
+      return res.status(200).json({
+        message: "Informações atualizadas com sucesso",
+        update
+      });
+    }
+
+    if (!currentPassword)
+      return res.status(400).json({ error: "A senha atual não pode ser nula" });
+
+    const checkPassword = await AuthRepository.findPassword(
+      id,
+      currentPassword
+    );
+
+    if (!checkPassword)
+      return res.status(400).json({
+        error: "A senha atual está incorreta"
+      });
+
+    const update = await AuthRepository.updateUser(id, dinamycPayload);
+    return res.status(200).json({
+      message: "Informações atualizadas com sucesso",
+      update
+    });
+  }
 }
 
 export default new AuthCotroller();
