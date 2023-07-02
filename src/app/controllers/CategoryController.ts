@@ -23,7 +23,7 @@ class CategoryController {
 
     const newCategory = await CategoryRepository.create(name);
 
-    return res.status(200).json({
+    return res.status(201).json({
       message: "Categoria cadastrada com sucesso.",
       newCategory
     });

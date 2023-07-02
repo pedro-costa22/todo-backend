@@ -1,6 +1,5 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../database/dbConnection";
-import Tasks from "./Tasks";
 
 const Category = sequelize.define("category", {
   id: {
@@ -15,8 +14,5 @@ const Category = sequelize.define("category", {
     allowNull: false
   }
 });
-
-Category.hasMany(Tasks);
-Tasks.belongsTo(Category);
 
 export default Category;

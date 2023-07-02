@@ -30,14 +30,14 @@ class AuthCotroller {
   async store(req: Request, res: Response) {
     const { name, email, password } = req.body;
 
-    if (!name) return res.status(400).json({ error: "name is required" });
-    if (!email) return res.status(400).json({ error: "e-mail is required" });
+    if (!name) return res.status(404).json({ error: "name is required" });
+    if (!email) return res.status(404).json({ error: "e-mail is required" });
     if (!password)
-      return res.status(400).json({ error: "password is required" });
+      return res.status(404).json({ error: "password is required" });
 
     const emailExists = await AuthRepository.findByEmail(email);
     if (emailExists)
-      return res.status(400).json({ error: "email já cadastrado no sistema" });
+      return res.status(404).json({ error: "email já cadastrado no sistema" });
 
     const user = {
       name,
@@ -47,7 +47,7 @@ class AuthCotroller {
 
     const newUser = await AuthRepository.createUser(user);
     if (newUser) {
-      return res.status(200).json({
+      return res.status(201).json({
         message: "Usuário cadastrado com sucesso!",
         user
       });

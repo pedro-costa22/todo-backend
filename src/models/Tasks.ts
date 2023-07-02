@@ -1,6 +1,7 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../database/dbConnection";
 import User from "./User";
+import Category from "./Category";
 
 const Tasks = sequelize.define("tasks", {
   id: {
@@ -32,5 +33,8 @@ const Tasks = sequelize.define("tasks", {
 
 User.hasMany(Tasks);
 Tasks.belongsTo(User);
+
+Category.hasMany(Tasks);
+Tasks.belongsTo(Category);
 
 export default Tasks;
