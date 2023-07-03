@@ -5,3 +5,10 @@ export interface ITask {
   userId: string;
   categoryId: string;
 }
+
+export interface ITaskEdit {
+  name?: string;
+  description?: string;
+  status?: string;
+  categoryId?: string;
+}

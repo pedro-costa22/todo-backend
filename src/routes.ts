@@ -13,12 +13,14 @@ router.post("/user/update", AuthCotroller.update);
 
 //Categorie
 router.get("/categories", CategoryController.show);
-router.post("/category/create", CategoryController.store);
+router.post("/category", CategoryController.store);
 router.delete("/category/delete", CategoryController.delete);
 router.put("/category/update", CategoryController.update);
 
 //Tasks
 router.get("/tasks", TodoController.show);
 router.post("/task", TodoController.store);
+router.put("/task/:id", TodoController.update);
+router.delete("/task/:id", TodoController.delete);
 
 export default router;

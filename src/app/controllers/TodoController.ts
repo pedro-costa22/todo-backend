@@ -2,10 +2,11 @@ import { Request, Response } from "express";
 import TodoRepository from "../repositories/TodoRepository";
 import AuthRepository from "../repositories/AuthRepository";
 import CategoryRepository from "../repositories/CategoryRepository";
+import { ITaskEdit } from "@/types/Task";
 
 class TodoController {
   async show(req: Request, res: Response) {
-    const { user_id, limit = 10, page = 1 } = req.query;
+    const { user_id, limit = 10, page = 1, order = "DESC" } = req.query;
 
     if (!user_id)
       return res.status(404).json({
@@ -24,7 +25,8 @@ class TodoController {
     const tasks = await TodoRepository.getByPage(
       user_id as string,
       Number(limit),
-      count
+      count,
+      order as string
     );
 
     if (tasks.length === 0)
@@ -70,6 +72,62 @@ class TodoController {
     return res.status(201).json({
       message: "Tarefa criada com sucesso",
       newTask
+    });
+  }
+
+  async delete(req: Request, res: Response) {
+    const { id } = req.params;
+
+    if (!id) return res.status(400).json({ error: "id não pode ser nulo" });
+
+    const taskExists = await TodoRepository.getById(id);
+
+    if (!taskExists)
+      return res.status(404).json({ error: "Tarefa nao encontrada" });
+
+    await TodoRepository.delete(id);
+
+    return res.status(201).json({
+      message: "Tarefa excluida com sucesso"
+    });
+  }
+
+  async update(req: Request, res: Response) {
+    const { id } = req.params;
+
+    if (!id) return res.status(400).json({ error: "id não pode ser nulo" });
+
+    const taskExists = await TodoRepository.getById(id);
+
+    if (!taskExists)
+      return res.status(404).json({ error: "Tarefa nao encontrada" });
+
+    let body: ITaskEdit = {};
+    for (const [key, value] of Object.entries(req.body)) {
+      if (value) {
+        body = {
+          ...body,
+          [key]: value
+        };
+      }
+    }
+
+    if (Object.keys(body).length === 0) {
+      return res.status(404).json({
+        error: "Nenhum dado informado para update!",
+        exampleBody: `
+          name: string,
+          description: string,
+          status: string,
+          categoryId: string
+        `
+      });
+    }
+
+    const updateTask = await TodoRepository.update(id, body);
+    return res.status(200).json({
+      message: "Tarefa atualizada com sucesso!",
+      updateTask
     });
   }
 }
