@@ -98,6 +98,12 @@ class TodoController {
     if (!id) return res.status(400).json({ error: "id não pode ser nulo" });
 
     const taskExists = await TodoRepository.getById(id);
+    const categoryExists = await CategoryRepository.findById(
+      req.body.categoryId
+    );
+
+    if (!categoryExists)
+      return res.status(404).json({ error: "Categoria nao encontrada" });
 
     if (!taskExists)
       return res.status(404).json({ error: "Tarefa nao encontrada" });

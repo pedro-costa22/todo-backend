@@ -30,7 +30,8 @@ class CategoryController {
   }
 
   async update(req: Request, res: Response) {
-    const { id, newName } = req.body;
+    const { id } = req.params;
+    const { newName } = req.body;
 
     if (!id) return res.status(400).json({ error: "id não pode ser nulo" });
     if (!newName)
@@ -53,7 +54,7 @@ class CategoryController {
   }
 
   async delete(req: Request, res: Response) {
-    const { id } = req.body;
+    const { id } = req.params;
 
     if (!id) return res.status(400).json({ error: "id não pode ser nulo" });
 

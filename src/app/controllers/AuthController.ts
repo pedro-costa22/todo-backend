@@ -57,8 +57,8 @@ class AuthCotroller {
   }
 
   async update(req: Request, res: Response) {
-    const { id, name, newEmail, currentPassword, newPassword, profile } =
-      req.body;
+    const { id } = req.params;
+    const { name, newEmail, currentPassword, newPassword, profile } = req.body;
 
     if (!id) return res.status(400).json({ error: "Id não pode ser nulo" });
 

@@ -9,13 +9,13 @@ const router = Router();
 //Auth
 router.post("/login", AuthCotroller.show);
 router.post("/register", AuthCotroller.store);
-router.post("/user/update", AuthCotroller.update);
+router.post("/user/:id", AuthCotroller.update);
 
 //Categorie
 router.get("/categories", CategoryController.show);
 router.post("/category", CategoryController.store);
-router.delete("/category/delete", CategoryController.delete);
-router.put("/category/update", CategoryController.update);
+router.delete("/category/:id", CategoryController.delete);
+router.put("/category/:id", CategoryController.update);
 
 //Tasks
 router.get("/tasks", TodoController.show);
